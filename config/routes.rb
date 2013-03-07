@@ -1,10 +1,13 @@
 SampleApp::Application.routes.draw do
   
   resources :users
+  resources :sessions, only: [:new, :create, :destroy] #Sessions do not need to be shown or edited
 
   root to: 'static_pages#home'
   match '/signup',  to: 'users#new'
-  
+  match '/signin',  to: 'sessions#new' #Custom Named Route
+  match '/signout', to: 'sessions#destroy', via: :delete #Custom Named Route which only supports signout via delete method
+
   match '/help',    to: 'static_pages#help'
   match '/about',   to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'

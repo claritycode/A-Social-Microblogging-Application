@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
   				uniqueness: { case_sensitive: false }
 
-
+  #...................Additional Username.............................
   VALID_USERNAME_REGEX = /\A\w+\z/i  #Only letters, numbers & underscore
   validates :username, presence: true, format: { with: VALID_USERNAME_REGEX },
   				uniqueness: { case_sensitive: false }
