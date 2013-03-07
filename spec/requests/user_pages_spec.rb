@@ -28,9 +28,18 @@ describe "User Pages" do
 	    		fill_in "Password", with: "project8"
 	    		fill_in "Confirmation", with: "project8"
 	    	end
+	    	
 	    	it "should create valid user" do
 	    		expect { click_button submit }.to change(User, :count).by(1) #Capybara Syntax
 	    	end
+
+	    	describe "after saving the user" do
+		        before { click_button submit }
+		        let(:user) { User.find_by_email('user@example.com') }
+
+		        it { should have_selector('title', text: full_title(user.name)) }
+		        it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+      		end
 	    end
 
 	    describe "after submission" do
