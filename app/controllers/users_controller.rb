@@ -4,7 +4,10 @@ class UsersController < ApplicationController
   before_filter :correct_user, only: [:edit, :update]
 
   def index
-    @users = User.all
+    #@users = User.all
+    # Paginate returns ActiveRecord::Relation object, this method is 
+    #provided by will_paginate, params[:page] also comes from it
+    @users = User.paginate(page: params[:page]) 
   end
 
   def show
