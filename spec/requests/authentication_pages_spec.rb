@@ -39,6 +39,7 @@ describe "Authentication" do
 				before { click_link "Sign Out" }
 
 				it { should have_link("Sign In") }
+				#Test for absence of profile and users link
 			end
 		end
 	end
