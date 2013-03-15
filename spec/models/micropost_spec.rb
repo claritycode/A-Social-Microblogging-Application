@@ -40,4 +40,16 @@ describe Micropost do
   		end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
   	end
   end
+
+  describe "when the content is not present" do
+    before { @micropost.content = " " }
+
+    it { should_not be_valid }
+  end
+
+  describe "when the content is too long" do
+    before { @micropost.content = "a" * 141 }
+
+    it { should_not be_valid }
+  end
 end
