@@ -129,7 +129,7 @@ describe "when email address is already taken" do
     it { should_not be_valid }
   end
   
-#......................Username uniqueness Validaton.........................
+#......................Username uniqueness Validaton.................
 
 describe "when username is already taken" do
     before do
@@ -209,5 +209,34 @@ describe "when username is already taken" do
     end
 
     it { should be_admin }
+  end
+
+#................................Micropost................................
+
+  describe "microposts associations" do
+    before { @user.save }
+    let!(:older_micropost) do 
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right microposts in the right order" do
+      # This test fails as by default sqlite database returns micropost by
+      #ordering through id, but this test is also an indication of the
+      #fact that user.microposts method do exist and returns an aray 
+      @user.microposts.should == [newer_micropost, older_micropost]
+    end
+
+    it "should destroy associated microposts" do
+        microposts = @user.microposts.dup
+        @user.destroy
+
+        microposts.should_not be_empty
+        microposts.each do |micropost|
+          Micropost.find_by_id(micropost.id).should be_nil
+        end
+    end
   end
 end
