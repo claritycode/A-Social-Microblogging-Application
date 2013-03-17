@@ -2,7 +2,10 @@ SampleApp::Application.routes.draw do
   
   resources :users
   resources :sessions, only: [:new, :create, :destroy] #Sessions do not need to be shown or edited
-
+  #.....new and edit are not required as they are provided via 
+  #users resources
+  resources :microposts, only: [:create, :destroy]
+  
   root to: 'static_pages#home'
   match '/signup',  to: 'users#new'
   match '/signin',  to: 'sessions#new' #Custom Named Route
