@@ -69,6 +69,7 @@ describe "Static pages" do
     it "should render user's feed" do
       user.feed.each do |item|
         page.should have_selector("li##{item.id}", text: item.content)
+        #page.should have_link('delete', href: micropost_path(item))
       end
     end
 
