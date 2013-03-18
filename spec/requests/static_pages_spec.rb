@@ -57,4 +57,21 @@ describe "Static pages" do
     page.should have_selector 'title', text: full_title('')
   end
 
+  describe "for signed in users" do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+      FactoryGirl.create(:micropost, user: user, content: "dhkgh hdfgh")
+      sign_in user
+      visit root_path
+    end
+
+    it "should render user's feed" do
+      user.feed.each do |item|
+        page.should have_selector("li##{item.id}", text: item.content)
+      end
+    end
+
+
+  end
 end
