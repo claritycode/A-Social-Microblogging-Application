@@ -32,6 +32,7 @@ describe User do
   it { should respond_to(:remember_token) }
   it { should respond_to(:admin) }
   it { should respond_to(:microposts) } #Micropost model
+  it { should respond_to(:relationships) } #Relationship Model
 
   it { should be_valid }
   it { should_not be_admin }
