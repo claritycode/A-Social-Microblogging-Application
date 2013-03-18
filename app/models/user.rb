@@ -17,7 +17,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :name, :username, :password, :password_confirmation
   has_many :microposts, dependent: :destroy #destroyes the dependent microposts
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
-  
+  has_many :followed_users, through: :relationships, source: :followed
+
   has_secure_password
 
   before_save { |user| user.email = email.downcase }
@@ -40,6 +41,18 @@ class User < ActiveRecord::Base
 
   def feed
     Micropost.where("user_id = ?", id)
+  end
+
+  def following?(other_user)
+    relationships.find_by_followed_id(other_user.id)
+  end
+
+  def follow!(other_user)
+    relationships.create!(followed_id: other_user.id)
+  end
+
+  def unfollow!(other_user)
+    relationships.find_by_followed_id(other_user.id).destroy
   end
 
   private
