@@ -84,6 +84,7 @@ describe "Authentication" do
 				end
 			end
 
+
 			describe "when attempting to visit a protected page" do
 				before do
 					visit edit_user_path(user)
@@ -111,6 +112,20 @@ describe "Authentication" do
 
 				describe "when trying to destroy micropost" do
 					before { delete micropost_path(FactoryGirl.create(:micropost)) }
+
+					specify { response.should redirect_to(signin_path) }
+				end
+			end
+
+			describe "in the Relationships Controller" do
+				describe "submitting to the create action" do
+					before { post relationships_path }
+					
+					specify { response.should redirect_to(signin_path) }
+				end
+
+				describe "attempting to delete a relationship" do
+					before { delete relationship_path(1) }
 
 					specify { response.should redirect_to(signin_path) }
 				end
