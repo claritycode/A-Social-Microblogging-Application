@@ -18,7 +18,10 @@ class User < ActiveRecord::Base
   has_many :microposts, dependent: :destroy #destroyes the dependent microposts
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
   has_many :followed_users, through: :relationships, source: :followed
+  has_many :reverse_relationships, foreign_key: "followed_id", 
+             class_name: "Relationship", dependent: :destroy
 
+  has_many :followers, through: :reverse_relationships
   has_secure_password
 
   before_save { |user| user.email = email.downcase }
