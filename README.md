@@ -1,4 +1,3 @@
-# Ruby on Rails Tutorial: sample application
+# A Social MicroBlogging Platform: Application
 
-This is the sample application for
-our college project work
+It is a microblogging platform currently under development
