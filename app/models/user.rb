@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   #And a user creates relation with any micropost thus 
   #it have many microposts as favorites
   has_many :favorites, dependent: :destroy
-  has_many :favorited_microposts, through: :favorite, 
+  has_many :favorited_microposts, through: :favorites, 
             source: :micropost
   has_secure_password
 
@@ -64,6 +64,16 @@ class User < ActiveRecord::Base
 
   def unfollow!(other_user)
     relationships.find_by_followed_id(other_user.id).destroy
+  end
+
+  #user favorites a micropost by the following method
+  def favorite!(micropost)
+    favorites.create!(micropost_id: micropost.id)
+  end
+
+  #checks if the given micropost is favorited by the user
+  def favorited?(micropost)
+    favorites.find_by_micropost_id(micropost.id)
   end
 
   private
