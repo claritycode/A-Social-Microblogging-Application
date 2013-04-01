@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
              class_name: "Relationship", dependent: :destroy
 
   has_many :followers, through: :reverse_relationships
+  has_many :favorites, dependent: :destroy
   has_secure_password
 
   before_save { |user| user.email = email.downcase }

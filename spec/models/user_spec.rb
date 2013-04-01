@@ -38,6 +38,7 @@ describe User do
   it { should respond_to(:following?) }
   it { should respond_to(:reverse_relationships) }
   it { should respond_to(:followers) }
+  it { should respond_to(:favorites) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -293,4 +294,28 @@ describe "when username is already taken" do
       its(:followed_users) { should_not include(other_user) }
     end
   end
+
+#........................Favorite....................
+
+  describe "favorite associations" do
+    before { @user.save }
+    let(:user2) { FactoryGirl.create(:user) }
+    let!(:m1) { FactoryGirl.create(:micropost, 
+                                    user: @user) }
+    let!(:m2) { FactoryGirl.create(:micropost, 
+                                    user: user2) }
+    let!(:f1) { FactoryGirl.create(:favorite, user: @user,
+                  micropost: m2) }
+    let!(:f2) { FactoryGirl.create(:favorite, user: @user,
+                  micropost: m1) }
+    it "should destroy associated favorites" do
+      favorites = @user.favorites.dup
+      @user.destroy
+      favorites.should_not be_empty
+      favorites.each do |f|
+        Favorite.find_by_id(f.id).should be_nil
+      end
+    end
+  end
 end
+
