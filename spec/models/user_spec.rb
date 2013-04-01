@@ -330,6 +330,14 @@ describe "when username is already taken" do
 
     it { should be_favorited(m) }
     its(:favorited_microposts) { should include(m) }
+
+    describe "and unfavoriting" do
+      before do
+        @user.unfavorite!(m)
+      end
+
+      it { should_not be_favorited(m) }
+      its(:favorited_microposts) { should_not include(m) }
+    end
   end
 end
-

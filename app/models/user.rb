@@ -76,6 +76,10 @@ class User < ActiveRecord::Base
     favorites.find_by_micropost_id(micropost.id)
   end
 
+  def unfavorite!(micropost)
+    favorites.find_by_micropost_id(micropost.id).destroy
+  end
+
   private
     def create_remember_token
           self.remember_token = SecureRandom.urlsafe_base64
