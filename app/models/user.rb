@@ -22,7 +22,14 @@ class User < ActiveRecord::Base
              class_name: "Relationship", dependent: :destroy
 
   has_many :followers, through: :reverse_relationships
+  
+  #Favorites Associations with user model.
+  # A user have many favorites
+  #And a user creates relation with any micropost thus 
+  #it have many microposts as favorites
   has_many :favorites, dependent: :destroy
+  has_many :favorited_microposts, through: :favorite, 
+            source: :micropost
   has_secure_password
 
   before_save { |user| user.email = email.downcase }

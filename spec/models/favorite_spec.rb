@@ -29,6 +29,8 @@ describe Favorite do
   it { should respond_to(:micropost_id) }
   it { should respond_to(:user) }
   its(:user) { should == user }
+  it { should respond_to(:micropost) }
+  its(:micropost) { should == micropost}
 
   it { should be_valid }
 
@@ -52,5 +54,5 @@ describe Favorite do
   	end
   end
 
-  
+
 end
