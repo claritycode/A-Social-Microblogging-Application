@@ -3,7 +3,8 @@ namespace :db do
 	task populate: :environment do
 		make_users
 		make_microposts
-		make_relationships		
+		make_relationships
+		make_favorites		
 	end
 end
 
@@ -44,4 +45,13 @@ end
 		followers = users[3..40]
 		followed_users.each { |followed| user.follow!(followed) }
   		followers.each      { |follower| follower.follow!(user) }
+	end
+
+	def make_favorites
+		users = User.all(limit: 6)
+		users.each do |user1|
+			users.each do |user2|
+				user1.favorite!(user2.microposts.first)
+			end
+		end
 	end
