@@ -88,5 +88,17 @@ describe "Static pages" do
     end
 
 
+    describe "favorites counts" do
+      let(:other_user) { FactoryGirl.create(:user) }
+      let(:m1) { FactoryGirl.create(:micropost, 
+                  user: other_user) }
+      before do
+        user.favorite!(m1)
+        visit root_path
+      end
+
+      it { should have_link('1 favorite', 
+            href: favorites_user_path(user)) }
+    end
   end
 end

@@ -2,7 +2,7 @@ SampleApp::Application.routes.draw do
   
   resources :users do
     member do
-      get :following, :followers
+      get :following, :followers, :favorites
     end
   end
   resources :sessions, only: [:new, :create, :destroy] #Sessions do not need to be shown or edited
