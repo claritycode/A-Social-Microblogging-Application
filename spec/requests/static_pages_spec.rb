@@ -97,7 +97,7 @@ describe "Static pages" do
         visit root_path
       end
 
-      it { should have_link('1 favorite', 
+      it { should have_link('1 favorites', 
             href: favorites_user_path(user)) }
     end
   end

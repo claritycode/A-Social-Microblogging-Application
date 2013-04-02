@@ -1,0 +1,6 @@
+<% if current_user.favorited?(micropost) %>
+	<%= render partial: "shared/unfavorite", locals: { micropost:
+		micropost } %>
+<% else %>
+	<%= render partial: "shared/favorite", locals: { micropost: micropost } %>
+<% end %>
