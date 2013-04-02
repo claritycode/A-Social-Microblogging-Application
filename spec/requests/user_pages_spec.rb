@@ -236,4 +236,26 @@ describe "User Pages" do
           it { should have_link(user.name, href: user_path(user)) }
         end
       end
+
+      describe "favorites" do
+        let(:user) { FactoryGirl.create(:user) }
+        let(:other_user) { FactoryGirl.create(:user) }
+        let!(:m1) { FactoryGirl.create(:micropost, 
+                      user: other_user) }
+        before do
+          user.favorite!(m1)
+        end
+
+        describe "favorite page" do
+          before do
+            sign_in user
+            visit favorites_user_path(user)
+          end
+
+          it { should have_selector('title', text: 'Favorites') }
+          it { should have_selector('h3', text: 'Favorites') }
+          it { should have_content(m1.content) }
+          it { should have_content(user.favorites.count) }
+        end
+      end
 end

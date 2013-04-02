@@ -82,6 +82,12 @@ describe "Authentication" do
 
 					it { should have_selector('title', text: 'Sign In') }
 				end
+
+				describe "visitng the favorites page" do
+					before { visit favorites_user_path(user) }
+
+					it { should have_selector('title', text: 'Sign In')}
+				end
 			end
 
 
