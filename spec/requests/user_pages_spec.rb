@@ -121,8 +121,7 @@ describe "User Pages" do
             end
 
           end
-        end
-
+        end  
      	end
 
      	describe "edit" do
