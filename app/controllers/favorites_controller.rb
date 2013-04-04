@@ -5,12 +5,20 @@ class FavoritesController < ApplicationController
 	def create
 		@micropost = Micropost.find(params[:favorite][:micropost_id])
 		current_user.favorite!(@micropost)
-		redirect_to root_path
+		# redirect_to root_path
+		respond_to do |format|
+  			format.html { redirect_to root_path }
+  			format.js
+		end
 	end
 
 	def destroy
 		@micropost = Favorite.find(params[:id]).micropost
 		current_user.unfavorite!(@micropost)
-		redirect_to root_path
+		# redirect_to root_path
+		respond_to do |format|
+  			format.html { redirect_to root_path }
+		  	format.js
+		end
 	end
 end

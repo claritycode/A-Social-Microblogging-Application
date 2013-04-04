@@ -1,0 +1,2 @@
+$("#favorite_form").html("<%= escape_javascript(render('shared/unfavorite')) %>")
+$("#favorites").html('<%= current_user.favorites.count %>')
