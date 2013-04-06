@@ -11,4 +11,7 @@
 
 class Mention < ActiveRecord::Base
   attr_accessible :micropost_id, :user_id
+
+  validates :micropost_id, presence: true
+  validates :user_id, presence: true
 end
