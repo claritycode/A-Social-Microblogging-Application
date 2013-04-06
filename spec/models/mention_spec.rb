@@ -12,17 +12,23 @@
 require 'spec_helper'
 
 describe Mention do
-	let(:user) { FactoryGirl.create(:user) }
-	let(:micropost) { FactoryGirl.create(:micropost, user: user) }
+	let(:user) { FactoryGirl.create(:user, username: 'user') }
+	let(:other_user) { FactoryGirl.create(:user, 
+				username: 'otheruser') }
+	let(:micropost) { FactoryGirl.create(:micropost, 
+		content: 'lorem @otheruser', user: user) }
 	before do
-		  @mention = Mention.new(micropost_id: micropost.id, 
-		  							user_id: user.id)
+		  # @mention = Mention.new(micropost_id: micropost.id, 
+		  							# user_id: user.id)
+		@mention = micropost.mentions.build(user_id: other_user.id)
 	end
 
 	subject { @mention }
 
 	it { should respond_to(:micropost_id) }
 	it { should respond_to(:user_id) }
+	it { should respond_to(:micropost) }
+	its(:micropost) { should == micropost }
 
 	it { should be_valid }
 
