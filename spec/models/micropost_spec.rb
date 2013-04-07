@@ -53,4 +53,23 @@ describe Micropost do
 
     it { should_not be_valid }
   end
+
+  describe "mention associations" do
+
+    before { @micropost.save }
+    let(:other_user) { FactoryGirl.create(:user, 
+        username: 'otheruser') }
+    let!(:mention1) { @micropost.mentions.create!(user_id: user.id) }
+    let!(:mention2) { @micropost.mentions.create!(user_id: other_user.id) }
+    # subject { m1 }
+
+    it "should destroy associated mentions" do
+      m1 = @micropost.mentions.dup
+      @micropost.destroy
+      m1.should_not be_empty
+      m1.each do |mention|
+        Mention.find_by_id(mention.id).should be_nil
+      end
+    end
+  end
 end

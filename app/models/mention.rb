@@ -10,7 +10,7 @@
 #
 
 class Mention < ActiveRecord::Base
-  attr_accessible :micropost_id, :user_id
+  attr_accessible :user_id
 
   belongs_to :micropost
 

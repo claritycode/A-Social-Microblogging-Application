@@ -43,4 +43,12 @@ describe Mention do
 
 		it { should_not be_valid }
 	end
+
+	describe "accessible attributes" do
+		it "should not allow access to micropost_id" do
+			expect do
+				Mention.new(micropost_id: micropost.id)
+			end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+		end
+	end
 end
