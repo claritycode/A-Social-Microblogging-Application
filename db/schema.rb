@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130406162907) do
+ActiveRecord::Schema.define(:version => 20130408070138) do
 
   create_table "favorites", :force => true do |t|
     t.integer  "user_id"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20130406162907) do
   end
 
   add_index "mentions", ["micropost_id", "user_id"], :name => "index_mentions_on_micropost_id_and_user_id", :unique => true
+  add_index "mentions", ["micropost_id"], :name => "index_mentions_on_micropost_id"
   add_index "mentions", ["user_id"], :name => "index_mentions_on_user_id"
 
   create_table "microposts", :force => true do |t|

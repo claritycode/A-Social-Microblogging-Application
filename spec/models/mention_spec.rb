@@ -29,6 +29,8 @@ describe Mention do
 	it { should respond_to(:user_id) }
 	it { should respond_to(:micropost) }
 	its(:micropost) { should == micropost }
+	it { should respond_to(:user) }
+	its(:user) { should == other_user }
 
 	it { should be_valid }
 

@@ -25,6 +25,7 @@ describe Micropost do
   it { should respond_to(:user) }
   its(:user) { should == user }
   it { should respond_to(:mentions) }
+  it { should respond_to(:mentioned_users) }
 
   it { should be_valid }
 
@@ -57,18 +58,36 @@ describe Micropost do
   describe "mention associations" do
 
     before { @micropost.save }
-    let(:other_user) { FactoryGirl.create(:user, 
-        username: 'otheruser') }
+    let(:other_user) { FactoryGirl.create(:user) }
+    
     let!(:mention1) { @micropost.mentions.create!(user_id: user.id) }
     let!(:mention2) { @micropost.mentions.create!(user_id: other_user.id) }
-    # subject { m1 }
-
+    
     it "should destroy associated mentions" do
       m1 = @micropost.mentions.dup
       @micropost.destroy
       m1.should_not be_empty
       m1.each do |mention|
         Mention.find_by_id(mention.id).should be_nil
+      end
+    end
+
+    describe "status" do
+      let!(:u1) { FactoryGirl.create(:user, 
+        username: 'u1') }
+      let!(:u2) { FactoryGirl.create(:user, 
+        username: 'u2') }
+      let!(:u3) { FactoryGirl.create(:user, 
+        username: 'u3') }
+      let!(:m1) { FactoryGirl.create(:micropost, 
+        content: 'Here @u1 @u2 and @u3 are present', 
+        user_id: user.id) }
+      
+      it "should have users who are mentioned in content" do
+        m1.mentioned_users.should include(u1)
+        m1.mentioned_users.should include(u2)
+        m1.mentioned_users.should include(u3)
+        m1.mentioned_users.should == [u1, u2, u3]
       end
     end
   end

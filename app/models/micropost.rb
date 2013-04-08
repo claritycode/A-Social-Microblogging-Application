@@ -13,10 +13,14 @@ class Micropost < ActiveRecord::Base
   attr_accessible :content
   belongs_to :user
   has_many :mentions, dependent: :destroy
+  has_many :mentioned_users, through: :mentions, source: :user
 
+  USERNAME_REGEX = /@\w+/i
   validates :content, presence: true, length: { maximum: 140 }
   validates :user_id, presence: true
   default_scope order: 'microposts.created_at DESC'
+
+  after_save :mention!
 
   def self.from_users_followed_by(user)
   	#followed_user_ids = user.followed_user_ids
@@ -26,4 +30,27 @@ class Micropost < ActiveRecord::Base
   	where("user_id IN (#{followed_user_ids}) OR user_id = :user_id",
   			user_id: user.id)
   end
+
+  private 
+
+    def mention!
+      return unless mention?
+
+      mentioned_people.each do |user|
+        mentions.create!(user_id: user.id)
+      end
+    end
+
+    def mention?
+      content.match(USERNAME_REGEX)
+    end
+
+    def mentioned_people
+      users = []
+      content.clone.gsub!(USERNAME_REGEX).each do |username|
+        user = User.find_by_username(username[1..-1])
+        users << user if user
+      end
+      users.uniq
+    end
 end
