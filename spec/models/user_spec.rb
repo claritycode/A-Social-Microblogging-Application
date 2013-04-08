@@ -250,11 +250,17 @@ describe "when username is already taken" do
         FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
       end
 
+      let(:unfollowed_post_with_mention) do
+        FactoryGirl.create(:micropost, content: "Hi @example", 
+                user: FactoryGirl.create(:user) )
+      end
+
       let(:followed_user) { FactoryGirl.create(:user) }
 
       before do
         @user.follow!(followed_user)
         3.times { followed_user.microposts.create!(content: "Lorem ipsum") }
+        # followed_user.microposts.create!(content: "")
       end
 
       its(:feed) { should include(older_micropost) }
@@ -265,6 +271,7 @@ describe "when username is already taken" do
           should include(micropost)
         end
       end
+      its(:feed) { should include(unfollowed_post_with_mention) }
     end
   end
 
