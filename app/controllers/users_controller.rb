@@ -36,7 +36,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    
+    @user.updating_password = true
     if @user.update_attributes(params[:user])
       flash[:success] = "Profile updated"
       sign_in @user

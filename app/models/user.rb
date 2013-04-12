@@ -2,19 +2,22 @@
 #
 # Table name: users
 #
-#  id              :integer          not null, primary key
-#  name            :string(255)
-#  email           :string(255)
-#  username        :string(255)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  password_digest :string(255)
-#  remember_token  :string(255)
-#  admin           :boolean          default(FALSE)
+#  id                     :integer          not null, primary key
+#  name                   :string(255)
+#  email                  :string(255)
+#  username               :string(255)
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  password_digest        :string(255)
+#  remember_token         :string(255)
+#  admin                  :boolean          default(FALSE)
+#  password_reset_token   :string(255)
+#  password_reset_sent_at :datetime
 #
 
 class User < ActiveRecord::Base
   attr_accessible :email, :name, :username, :password, :password_confirmation
+  attr_accessor :updating_password
   has_many :microposts, dependent: :destroy #destroyes the dependent microposts
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
   has_many :followed_users, through: :relationships, source: :followed
@@ -39,8 +42,8 @@ class User < ActiveRecord::Base
   validates :username, presence: true, format: { with: VALID_USERNAME_REGEX },
   				uniqueness: { case_sensitive: false }
 
-  validates :password, length: { minimum: 6 }
-  validates :password_confirmation, presence: true
+  validates :password, length: { minimum: 6 }, if: :should_validate_password?
+  validates :password_confirmation, presence: true, if: :should_validate_password?
 
 
   def feed
@@ -59,6 +62,13 @@ class User < ActiveRecord::Base
     relationships.find_by_followed_id(other_user.id).destroy
   end
 
+  def send_password_reset_email
+    generate_token(:password_reset_token)
+    self.password_reset_sent_at = Time.zone.now
+    save!
+    UserMailer.password_reset(self).deliver
+  end
+
   private
 
     def generate_token(column)
@@ -69,4 +79,8 @@ class User < ActiveRecord::Base
     # def create_remember_token
     #       self.remember_token = SecureRandom.urlsafe_base64
     # end
+
+    def should_validate_password?
+      updating_password || new_record?
+    end
 end

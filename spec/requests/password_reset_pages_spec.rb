@@ -17,7 +17,7 @@ describe "Password Reset Pages" do
 			end
 
 			it { should have_selector('title', text: 'Application') }
-			it { should have_content('div.alert.alert-notice', 
+			it { should have_selector('div.alert.alert-notice', 
 				text: 'check your email') }
 		end
 	end
