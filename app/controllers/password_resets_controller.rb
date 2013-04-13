@@ -2,6 +2,7 @@ class PasswordResetsController < ApplicationController
   def new
   end
 
+  #sendGrid in production,letter_opener for development and smtp settings
   def create
   	user = User.find_by_email(params[:password_reset][:email])
   	user.send_password_reset_email if user
@@ -22,7 +23,7 @@ class PasswordResetsController < ApplicationController
       @user.password_reset_sent_at = 3.hours.ago
       @user.save
       flash[:success] = 'Your Password Reset was successful. 
-      Please Sign In to ontinue enjoying the service'
+      Please Sign In to Continue enjoying the service'
   		redirect_to signin_url
   	else
   		render 'edit'
