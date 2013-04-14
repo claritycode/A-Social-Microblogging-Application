@@ -2,7 +2,7 @@ SampleApp::Application.routes.draw do
   
   resources :users do
     member do
-      get :following, :followers
+      get :following, :followers, :mentions
     end
   end
   resources :sessions, only: [:new, :create, :destroy] #Sessions do not need to be shown or edited
@@ -15,6 +15,7 @@ SampleApp::Application.routes.draw do
   match '/signup',  to: 'users#new'
   match '/signin',  to: 'sessions#new' #Custom Named Route
   match '/signout', to: 'sessions#destroy', via: :delete #Custom Named Route which only supports signout via delete method
+  # match '/mentions', to: 'users#mentions'
 
   match '/help',    to: 'static_pages#help'
   match '/about',   to: 'static_pages#about'

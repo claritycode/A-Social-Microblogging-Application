@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   
   before_filter :signed_in_user,
-     only: [:edit, :update, :index, :destroy, :followers, :following]
-  before_filter :correct_user, only: [:edit, :update]
+     only: [:edit, :update, :index, :destroy, :followers, :following, :mentions]
+  before_filter :correct_user, only: [:edit, :update, :mentions]
   before_filter :admin_user, only: :destroy
 
   def index
@@ -65,7 +65,14 @@ class UsersController < ApplicationController
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
   end
-  
+
+  def mentions
+    # @title = "Mentions"
+    # @user = current_user
+    # @user = User.find(params[:id])
+    @microposts = @user.mentioned_microposts.paginate(page: params[:page])
+    render 'show_mentions'
+  end  
 
   def correct_user
     @user = User.find(params[:id])

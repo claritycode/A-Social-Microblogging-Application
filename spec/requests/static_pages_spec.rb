@@ -73,18 +73,18 @@ describe "Static pages" do
       end
     end
 
-    describe " For micropost with mentions" do
-      let(:other_user) { FactoryGirl.create(:user, 
-                    username: 'otheruser') }
-      before do
-        FactoryGirl.create(:micropost, content: "Lorem @otheruser",
-                      user: user)
-      end
+    # describe " For micropost with mentions" do
+    #   let(:other_user) { FactoryGirl.create(:user, 
+    #                 username: 'otheruser') }
+    #   before do
+    #     FactoryGirl.create(:micropost, content: "Lorem @otheruser",
+    #                   user: user)
+    #   end
 
-      it "should link mention to users profile" do
-        page.should have_link('@otheruser', href: user_path(other_user))
-      end
-    end
+    #   it "should link mention to users profile" do
+    #     page.should have_link('@otheruser', href: user_path(other_user))
+    #   end
+    # end
     
 
     describe "following/followers" do

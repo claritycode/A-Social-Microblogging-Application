@@ -38,6 +38,8 @@ describe User do
   it { should respond_to(:following?) }
   it { should respond_to(:reverse_relationships) }
   it { should respond_to(:followers) }
+  it { should respond_to(:presence_in_mentions) }
+  it { should respond_to(:mentioned_microposts) }
 
   it { should be_valid }
   it { should_not be_admin }

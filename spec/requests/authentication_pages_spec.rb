@@ -82,6 +82,12 @@ describe "Authentication" do
 
 					it { should have_selector('title', text: 'Sign In') }
 				end
+
+				describe "visiting the mentions page" do
+					before { visit mentions_user_path(user) }
+
+					it { should have_selector('title', text: 'Sign In') }
+				end
 			end
 
 
@@ -142,6 +148,13 @@ describe "Authentication" do
 				before { visit edit_user_path(wrong_user) }
 				it { should_not have_selector('title', 
 					text: full_title('Edit user')) }
+			end
+
+			describe "visiting users#mentions page" do
+				before { visit mentions_user_path(wrong_user) }
+
+				it { should_not have_selector('title',
+						text: 'Mentions') }
 			end
 
 			describe "submitting the PUT request to update action for user" do

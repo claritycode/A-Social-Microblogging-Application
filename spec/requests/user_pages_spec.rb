@@ -236,4 +236,24 @@ describe "User Pages" do
           it { should have_link(user.name, href: user_path(user)) }
         end
       end
+
+      describe "mentions" do
+        let!(:user) { FactoryGirl.create(:user, username: "user") }
+        let!(:other_user) { FactoryGirl.create(:user, username: "otheruser") }
+        let!(:m1) { FactoryGirl.create(:micropost, 
+          content: "Lorem @user", user: other_user) }
+        
+        before do
+          sign_in user
+          visit mentions_user_path(user)
+        end
+
+        it { should have_selector('title', text: "Mentions") }
+        it { should have_selector('h3', text: "Mentions") }
+
+        describe "should have microposts where the current user is mentioned" do
+
+          it { should have_content(m1.content) }
+        end
+      end
 end
