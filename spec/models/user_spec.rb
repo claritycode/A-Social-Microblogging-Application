@@ -2,15 +2,17 @@
 #
 # Table name: users
 #
-#  id              :integer          not null, primary key
-#  name            :string(255)
-#  email           :string(255)
-#  username        :string(255)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  password_digest :string(255)
-#  remember_token  :string(255)
-#  admin           :boolean          default(FALSE)
+#  id                     :integer          not null, primary key
+#  name                   :string(255)
+#  email                  :string(255)
+#  username               :string(255)
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  password_digest        :string(255)
+#  remember_token         :string(255)
+#  admin                  :boolean          default(FALSE)
+#  password_reset_token   :string(255)
+#  password_reset_sent_at :datetime
 #
 
 require 'spec_helper'
@@ -38,8 +40,15 @@ describe User do
   it { should respond_to(:following?) }
   it { should respond_to(:reverse_relationships) }
   it { should respond_to(:followers) }
+<<<<<<< HEAD
+  
+=======
   it { should respond_to(:presence_in_mentions) }
   it { should respond_to(:mentioned_microposts) }
+  it { should respond_to(:password_reset_token) }
+  it { should respond_to(:password_reset_sent_at) }
+  it { should respond_to(:send_password_reset_email) }
+>>>>>>> forgot-password
 
   it { should be_valid }
   it { should_not be_admin }
@@ -184,6 +193,31 @@ describe "when username is already taken" do
     before { @user.password_confirmation = nil }
     
     it { should_not be_valid }
+  end
+
+  describe "during password reset" do
+    before { @user.save }
+
+    describe "before reset request" do
+
+      its(:password_reset_token) { should be_blank }
+      its(:password_reset_sent_at) { should be_blank }
+      # it "should not have delivered any email yet" do
+      #   ActionMailer::Base.deliveries.should == []
+      # end
+    end
+
+    describe "after submitting request for password reset" do
+      before { @user.send_password_reset_email }
+
+      
+      its(:password_reset_token) { should_not be_blank }
+      its(:password_reset_sent_at) { should_not be_blank }
+
+      it "should send an e-mail" do
+        ActionMailer::Base.deliveries.last.to.should == [@user.email]
+      end
+    end
   end
 
 #........................Authenticate............................
