@@ -4,9 +4,14 @@ class PasswordResetsController < ApplicationController
 
   #sendGrid in production,letter_opener for development and smtp settings
   def create
-  	user = User.find_by_email(params[:password_reset][:email])
-  	user.send_password_reset_email if user
-  	redirect_to root_url, notice: "Please check your email"
+    if email_valid?(params[:password_reset][:email])
+      user = User.find_by_email(params[:password_reset][:email])
+      user.send_password_reset_email if user
+      redirect_to root_url, notice: "Please check your email"
+    else
+      flash.now[:error] = "Invalid Email Address. Please try agian"
+      render 'new'
+    end
   end
 
   def edit
@@ -28,5 +33,9 @@ class PasswordResetsController < ApplicationController
   	else
   		render 'edit'
   	end
+  end
+
+  def email_valid?(email)
+    email.match(/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i)
   end
 end

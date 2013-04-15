@@ -40,15 +40,12 @@ describe User do
   it { should respond_to(:following?) }
   it { should respond_to(:reverse_relationships) }
   it { should respond_to(:followers) }
-<<<<<<< HEAD
-  
-=======
   it { should respond_to(:presence_in_mentions) }
   it { should respond_to(:mentioned_microposts) }
   it { should respond_to(:password_reset_token) }
   it { should respond_to(:password_reset_sent_at) }
   it { should respond_to(:send_password_reset_email) }
->>>>>>> forgot-password
+
 
   it { should be_valid }
   it { should_not be_admin }

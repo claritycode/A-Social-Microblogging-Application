@@ -10,6 +10,13 @@ describe "Password Reset Pages" do
 		it { should have_selector('title', text: 'Password Reset') }
 		it { should have_selector('h1', text: 'Password Reset') }
 
+		describe "With invalid email" do
+			before { click_button "Submit" }
+
+			it { should have_selector('title', text: 'Password Reset') }
+			it { should have_selector('div.alert.alert-error', text: 'Invalid') }
+		end
+
 		describe "submitting the email" do
 			before do
 				fill_in "Email", with: "user@example.com"

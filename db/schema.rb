@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-
-=======
 ActiveRecord::Schema.define(:version => 20130411063128) do
->>>>>>> forgot-password
 
   create_table "favorites", :force => true do |t|
     t.integer  "user_id"
