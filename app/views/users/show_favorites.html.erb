@@ -16,7 +16,7 @@
       <h3>Favorites (<%= @user.favorites.count %>) </h3>
       <ol class="microposts">
         <!-- <%= render @favorites %> -->
-        <%= render partial: 'favorites/favorite', collection: @favorites %>
+        <%= render partial: 'users/favorite', collection: @favorites %>
       </ol>
       <%= will_paginate @favorites %>
     <% end %>

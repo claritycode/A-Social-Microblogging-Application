@@ -22,3 +22,4 @@ doc/
 .DS_Store
 .idea
 
+config/app_environment_variables.rb
