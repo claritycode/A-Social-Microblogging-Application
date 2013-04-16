@@ -12,4 +12,11 @@
     </strong>
     followers
   </a>
+  <!-- ids are used by ajax for dynamic increment/decrement -->
+  <a href="<%= favorites_user_path(@user) %>">
+    <strong id="favorites" class="stat">
+      <%= @user.favorites.count %>
+    </strong>
+    favorites
+  </a>
 </div>

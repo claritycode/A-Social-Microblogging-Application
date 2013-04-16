@@ -102,5 +102,58 @@ describe "Static pages" do
     end
 
 
+    describe "favorites counts" do
+      let(:other_user) { FactoryGirl.create(:user) }
+      let(:m1) { FactoryGirl.create(:micropost, 
+                  user: other_user) }
+      before do
+        user.favorite!(m1)
+        visit root_path
+      end
+
+      it { should have_link('1 favorites', 
+            href: favorites_user_path(user)) }
+    end
+
+    describe "favorite/unfavorite" do
+          # let(:other_user) { FactoryGirl.create(:user) }
+          # let(:m1) { FactoryGirl.create(:micropost, 
+                      # user: other_user) }
+
+          describe "favoriting a micropost" do
+            # before { visit root_path }
+            it "should increment user's favorites" do
+              expect do
+                click_button 'Favorite'
+              end.to change(user.favorited_microposts, :count).by(1)
+            end
+
+            describe "toggling favorite/favorited" do
+              before { click_button 'Favorite' }
+
+              it { should have_selector('input', value: 'Favorited') }
+            end
+          end
+
+          describe "unfavoriting a micropost" do
+            # before { visit root_path }
+            before do
+              click_button 'Favorite'
+              visit root_path
+            end
+            it "should decrement user's favorites" do
+              expect do
+                click_button 'Favorited'
+              end.to change(user.favorited_microposts, :count).by(-1)
+            end
+
+            describe "toggling favorite/favorited" do
+              before { click_button 'Favorited' }
+
+              it { should have_selector('input', value: 'Favorite') }
+            end
+          end
+        
+    end
   end
 end

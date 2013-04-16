@@ -45,7 +45,10 @@ describe User do
   it { should respond_to(:password_reset_token) }
   it { should respond_to(:password_reset_sent_at) }
   it { should respond_to(:send_password_reset_email) }
-
+  it { should respond_to(:favorites) }
+  it { should respond_to(:favorited_microposts) }
+  it { should respond_to(:favorite!) }
+  it { should respond_to(:favorited?) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -331,6 +334,49 @@ describe "when username is already taken" do
 
       it { should_not be_following(other_user) }
       its(:followed_users) { should_not include(other_user) }
+    end
+  end
+
+#........................Favorite....................
+
+  describe "favorite associations" do
+    before { @user.save }
+    let(:other_user) { FactoryGirl.create(:user) }
+    let!(:m1) { FactoryGirl.create(:micropost, 
+                                    user: other_user) }
+    let!(:f1) { FactoryGirl.create(:favorite, user: @user,
+                  micropost: m1) }
+
+    it "should destroy associated favorites" do
+      favorites = @user.favorites.dup
+      @user.destroy
+      favorites.should_not be_empty
+      favorites.each do |f|
+        Favorite.find_by_id(f.id).should be_nil
+      end
+    end
+  end
+
+  describe "favoriting" do
+    let(:other_user) { FactoryGirl.create(:user) }
+    let(:m) { FactoryGirl.create(:micropost, 
+              user: other_user) }
+
+    before do
+      @user.save
+      @user.favorite!(m)
+    end    
+
+    it { should be_favorited(m) }
+    its(:favorited_microposts) { should include(m) }
+
+    describe "and unfavoriting" do
+      before do
+        @user.unfavorite!(m)
+      end
+
+      it { should_not be_favorited(m) }
+      its(:favorited_microposts) { should_not include(m) }
     end
   end
 end

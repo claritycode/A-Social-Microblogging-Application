@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
   
   before_filter :signed_in_user,
-     only: [:edit, :update, :index, :destroy, :followers, :following, :mentions]
+     only: [:edit, :update, :index, :destroy, :followers, :following, :mentions, :favorites]
+  
   before_filter :correct_user, only: [:edit, :update, :mentions]
+
   before_filter :admin_user, only: :destroy
 
   def index
@@ -74,6 +76,13 @@ class UsersController < ApplicationController
     render 'show_mentions'
   end  
 
+  def favorites
+    @title = "Favorites"
+    @user = User.find(params[:id])
+    @favorites = @user.favorited_microposts.paginate(page: params[:page])
+    render 'show_favorites'
+  end
+  
   def correct_user
     @user = User.find(params[:id])
     redirect_to(root_path) unless current_user?(@user)

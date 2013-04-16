@@ -1,0 +1,24 @@
+<%provide(:title, @title)%>
+<div class="row">
+  <aside class="span4">
+    <section>
+      <h1>
+        <%= gravatar_for @user %>
+        <%= @user.name %>
+      </h1>
+    </section>
+    <section>
+      <%= render 'shared/stats' %>
+    </section>
+  </aside>
+  <div class = "span8">
+    <% if @user.favorites.any? %>
+      <h3>Favorites (<%= @user.favorites.count %>) </h3>
+      <ol class="microposts">
+        <!-- <%= render @favorites %> -->
+        <%= render partial: 'users/favorite', collection: @favorites %>
+      </ol>
+      <%= will_paginate @favorites %>
+    <% end %>
+  </div>
+</div>

@@ -27,6 +27,13 @@ class User < ActiveRecord::Base
   has_many :followers, through: :reverse_relationships
   has_many :presence_in_mentions, class_name: "Mention"
   has_many :mentioned_microposts, through: :presence_in_mentions, source: :micropost
+  #Favorites Associations with user model.
+  # A user have many favorites
+  #And a user creates relation with any micropost thus 
+  #it have many microposts as favorites
+  has_many :favorites, dependent: :destroy
+  has_many :favorited_microposts, through: :favorites, 
+            source: :micropost
 
   has_secure_password
 
@@ -70,6 +77,20 @@ class User < ActiveRecord::Base
     self.password_reset_sent_at = Time.zone.now
     save!
     UserMailer.password_reset(self).deliver
+  end
+
+    #user favorites a micropost by the following method
+  def favorite!(micropost)
+    favorites.create!(micropost_id: micropost.id)
+  end
+
+  #checks if the given micropost is favorited by the user
+  def favorited?(micropost)
+    favorites.find_by_micropost_id(micropost.id)
+  end
+
+  def unfavorite!(micropost)
+    favorites.find_by_micropost_id(micropost.id).destroy
   end
 
   private

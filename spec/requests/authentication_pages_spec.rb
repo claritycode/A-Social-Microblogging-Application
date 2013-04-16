@@ -90,6 +90,12 @@ describe "Authentication" do
 
 					it { should have_selector('title', text: 'Sign In') }
 				end
+
+				describe "visitng the favorites page" do
+					before { visit favorites_user_path(user) }
+
+					it { should have_selector('title', text: 'Sign In')}
+				end
 			end
 
 
@@ -134,6 +140,20 @@ describe "Authentication" do
 
 				describe "attempting to delete a relationship" do
 					before { delete relationship_path(1) }
+
+					specify { response.should redirect_to(signin_path) }
+				end
+			end
+
+			describe "in the Favorites Controller" do
+				describe "submitting to the create action" do
+					before { post favorites_path }
+
+					specify { response.should redirect_to(signin_path) }
+				end
+
+				describe "submitting to the destroy action" do
+					before { delete favorite_path(1) }
 
 					specify { response.should redirect_to(signin_path) }
 				end

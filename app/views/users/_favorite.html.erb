@@ -1,0 +1,16 @@
+<li id="<%= favorite.id %>">
+  <%= link_to gravatar_for(favorite.user), favorite.user %>
+  <span class="user">
+    <%= link_to favorite.user.name, favorite.user %>
+  </span>
+  <span class="content"><%= favorite.content %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(favorite.created_at) %> ago.
+  </span>
+  <% if current_user?(favorite.user) %>
+  	<%= link_to "delete", favorite, method: :delete, data: { confirm: "Are you Sure?" }, title: favorite.content %>
+  <% end %>
+  <%= render partial: "shared/favorite_form", locals: { micropost: 
+    favorite } %>
+
+</li>
