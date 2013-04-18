@@ -288,7 +288,7 @@ describe "User Pages" do
       end
 
       describe "visiting activation link" do
-        let(:user) { FactoryGirl.create(:user) }
+        let(:user) { FactoryGirl.create(:user, state: "inactive") }
         before { visit confirm_user_url(user.remember_token) }
 
           it { should have_selector('title', text: 'Application') }
@@ -302,8 +302,16 @@ describe "User Pages" do
             it { should have_selector('title', text: 'Sign In') }
             it { should have_selector('h1', text: 'Sign In') }
             it { should have_selector('div.alert.alert-notice', 
-              text: 'You are already activated. Please sign in instead') }
+              text: 'Your account is already activated. Please sign in instead') }
             it { should_not have_selector('Sign Out') }
+          end
+
+          describe "visiting the same activation link again" do
+            before { visit confirm_user_url(user.remember_token) }
+
+            it { should have_selector('title', text: 'Application') }
+            it { should have_selector('div.alert.alert-error', 
+              text: 'Invalid Request') }
           end
       end
 end

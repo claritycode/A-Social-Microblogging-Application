@@ -5,6 +5,7 @@ FactoryGirl.define do
 		sequence(:username) { |n| "Ps#{n}" }
 		password "charusat"
 		password_confirmation "charusat"
+		state "active"
 
 		factory :admin do
 			admin true

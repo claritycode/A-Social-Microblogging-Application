@@ -36,6 +36,18 @@ describe "Authentication" do
 			it { should have_link('Sign Out', href: signout_path) }
 			it { should_not have_link('Sign In', href: signin_path) }
 
+			# describe "inactive user sign in" do
+			# 	before do
+			# 		click_link "Sign Out"
+			# 		user.state = "inactive"
+			# 		user.save!
+			# 		sign_in(user)
+			# 	end 
+
+			# 	it { should have_selector('title', text: 'Sign In') }
+			# 	it { should have_selector('div.alert.alert-error', 
+			# 		text: "Your account is not activated. Please check your email") }
+			# end
 
 			describe "followed by Sign Out" do
 				before { click_link "Sign Out" }
@@ -43,6 +55,19 @@ describe "Authentication" do
 				it { should have_link("Sign In") }
 				#Test for absence of profile and users link
 			end
+		end
+
+		describe "inactive user sign in" do
+			let(:user) { FactoryGirl.create(:user) }
+			before do
+				user.state = "inactive"
+				user.save!
+				sign_in(user)
+			end
+
+			it { should have_selector('title', text: 'Sign In') }
+			it { should have_selector('div.alert.alert-error', 
+					text: "Your account is not activated. Please check your email") }
 		end
 	end
 
