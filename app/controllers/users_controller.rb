@@ -88,10 +88,15 @@ class UsersController < ApplicationController
 
   def confirm
     user = User.find_by_remember_token!(params[:id])
-    user.activate!
-    sign_in user
-    flash[:success] = 'Your Account is now activated. Welcome'
-    redirect_to root_url
+    if user.activate
+      sign_in user
+      flash[:success] = 'Your Account is now activated. Welcome'
+      redirect_to root_url
+    else
+      sign_out if signed_in?
+      redirect_to signin_url, 
+      notice: 'You are already activated. Please sign in instead'  
+    end  
   end
   
   def correct_user

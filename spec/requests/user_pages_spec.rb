@@ -296,5 +296,14 @@ describe "User Pages" do
                         text: 'Your Account is now activated. Welcome') }
           it { should have_link('Sign Out') } #SingUp followed by user profile
         
+          describe "visitng the activation link again" do
+            before { visit confirm_user_url(user.reload.remember_token) }
+
+            it { should have_selector('title', text: 'Sign In') }
+            it { should have_selector('h1', text: 'Sign In') }
+            it { should have_selector('div.alert.alert-notice', 
+              text: 'You are already activated. Please sign in instead') }
+            it { should_not have_selector('Sign Out') }
+          end
       end
 end
