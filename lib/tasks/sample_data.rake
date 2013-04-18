@@ -16,6 +16,7 @@ end
 				password_confirmation: "project8")
 	
 	admin.toggle!(:admin)
+	admin.activate!
 
 		99.times do |n|
 			name = Faker::Name.name
