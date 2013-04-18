@@ -30,12 +30,12 @@ describe UserMailer do
   end
 
   describe "signup_confirmation" do
-    let(:confirmation) { user.send_singup_confirmation_email }
+    let!(:confirmation) { user.send_signup_confirmation_email }
 
     it "should render the headers" do
       confirmation.subject.should == "Account activation instructions for Application"
-      confirmation.to.should == user.email
-      confirmation.from.should == activation@application.com
+      confirmation.to.should == [user.email] 
+      confirmation.from.should == ['confirmation@application.com']
     end
 
     it "greets the user correctly" do

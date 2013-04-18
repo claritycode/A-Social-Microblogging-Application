@@ -11,4 +11,11 @@ class UserMailer < ActionMailer::Base
 
     mail to: user.email, subject: 'Password Reset Instructions for Application'
   end
+
+  def signup_confirmation(user)
+    @user = user
+
+    mail to: user.email, from: 'confirmation@application.com', 
+    subject: 'Account activation instructions for Application' 
+  end
 end

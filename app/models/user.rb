@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
   end
 
   def send_signup_confirmation_email
-    UserMailer.signup_confrimation(self).deliver
+    UserMailer.signup_confirmation(self).deliver
   end
 
     #user favorites a micropost by the following method
