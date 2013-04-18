@@ -13,6 +13,7 @@
 #  admin                  :boolean          default(FALSE)
 #  password_reset_token   :string(255)
 #  password_reset_sent_at :datetime
+#  state                  :string(255)
 #
 
 require 'spec_helper'
@@ -49,6 +50,11 @@ describe User do
   it { should respond_to(:favorited_microposts) }
   it { should respond_to(:favorite!) }
   it { should respond_to(:favorited?) }
+  it { should respond_to(:state) }
+  it { should respond_to(:state_name) }
+  its(:state_name) { should == :inactive }
+  it { should respond_to(:activate!) }
+  it { should respond_to(:send_signup_confimation_email) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -219,6 +225,27 @@ describe "when username is already taken" do
       end
     end
   end
+
+#.....................For state......................................
+describe "when activating a user" do
+  before { @user.save }
+
+  describe "should send a confirmation e-mail" do
+    before { @user.send_signup_confirmation_email }
+
+    ActionMailer::Base.deliveries.last.to.should == [@user.email]
+  end
+
+  describe "when activate event is called" do
+    before { @user.activate }
+
+    its(:state_name) { should == :active }
+
+    it "when tying to activate again" do
+      @user.activate.should be_false
+    end
+  end
+end
 
 #........................Authenticate............................
 

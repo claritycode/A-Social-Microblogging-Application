@@ -13,9 +13,11 @@
 #  admin                  :boolean          default(FALSE)
 #  password_reset_token   :string(255)
 #  password_reset_sent_at :datetime
+#  state                  :string(255)
 #
 
 class User < ActiveRecord::Base
+  # include ActiveRecord::Transitions
   attr_accessible :email, :name, :username, :password, :password_confirmation
   attr_accessor :updating_password
   has_many :microposts, dependent: :destroy #destroyes the dependent microposts
@@ -55,6 +57,14 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, if: :should_validate_password?
   validates :password_confirmation, presence: true, if: :should_validate_password?
 
+  state_machine :state, initial: :inactive do
+    state :inactive
+    state :active
+
+    event :activate do
+      transition to: :active, from: :inactive
+    end
+  end
 
   def feed
     Micropost.from_users_followed_by(self)
@@ -77,6 +87,10 @@ class User < ActiveRecord::Base
     self.password_reset_sent_at = Time.zone.now
     save!
     UserMailer.password_reset(self).deliver
+  end
+
+  def send_signup_confirmation_email
+    UserMailer.signup_confrimation(self).deliver
   end
 
     #user favorites a micropost by the following method
