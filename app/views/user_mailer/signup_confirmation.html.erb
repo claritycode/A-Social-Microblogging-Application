@@ -1,0 +1,11 @@
+<p>
+	Thank you <%= @user.name %> for Signing Up to our service
+</p>
+
+<p>
+	In order to activate your account and use the application to your benifit please click the below link
+</p>
+
+<p>
+	<%= link_to 'Activate My Account', confirm_user_url(@user.remember_token) %>
+</p>

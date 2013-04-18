@@ -44,7 +44,7 @@ describe UserMailer do
 
     it "contains signup confirmation url" do
       confirmation.body.encoded.should have_link('Activate My Account',
-          href: confirm_user_path(user.remember_token))
+          href: confirm_user_url(user.remember_token))
     end
   end
 end
