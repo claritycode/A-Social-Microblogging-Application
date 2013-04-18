@@ -54,7 +54,7 @@ describe User do
   it { should respond_to(:state_name) }
   its(:state_name) { should == :inactive }
   it { should respond_to(:activate!) }
-  it { should respond_to(:send_signup_confimation_email) }
+  it { should respond_to(:send_signup_confirmation_email) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -233,7 +233,9 @@ describe "when activating a user" do
   describe "should send a confirmation e-mail" do
     before { @user.send_signup_confirmation_email }
 
-    ActionMailer::Base.deliveries.last.to.should == [@user.email]
+    it "should send an email" do
+      ActionMailer::Base.deliveries.last.to.should == [@user.email]
+    end
   end
 
   describe "when activate event is called" do
@@ -244,6 +246,17 @@ describe "when activating a user" do
     it "when tying to activate again" do
       @user.activate.should be_false
     end
+    # it "when tying to activate again" do
+    #   expect do
+    #     @user.activate!
+    #   end.to raise_error(Transitions::InvalidTransition::Error)
+    # end
+  end
+
+  describe "trying to give invalid value to activate method" do
+    before { @user.state = 'dkjksgjk' }
+
+    it { should_not be_valid }
   end
 end
 

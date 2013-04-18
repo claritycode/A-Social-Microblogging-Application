@@ -26,9 +26,12 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to the Sample App"
-      redirect_to @user
+      @user.send_signup_confirmation_email
+      redirect_to root_url, 
+      notice: 'To complete your account activation please check your email'
+      # sign_in @user
+      # flash[:success] = "Welcome to the Sample App"
+      # redirect_to @user
     else
       render 'new'
     end
@@ -81,6 +84,14 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @favorites = @user.favorited_microposts.paginate(page: params[:page])
     render 'show_favorites'
+  end
+
+  def confirm
+    user = User.find_by_remember_token!(params[:id])
+    user.activate!
+    sign_in user
+    flash[:success] = 'Your Account is now activated. Welcome'
+    redirect_to root_url
   end
   
   def correct_user

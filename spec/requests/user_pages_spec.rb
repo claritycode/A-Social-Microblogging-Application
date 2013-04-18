@@ -33,15 +33,24 @@ describe "User Pages" do
   	    		expect { click_button submit }.to change(User, :count).by(1) #Capybara Syntax
   	    	end
 
-  	    	describe "after saving the user" do
-  		        before { click_button submit }
-  		        let(:user) { User.find_by_email('user@example.com') }
+          describe "after saving the user" do
+            before { click_button submit }
 
-  		        it { should have_selector('title', text: full_title(user.name)) }
-  		        it { should have_selector('div.alert.alert-success', 
-  		        							text: 'Welcome') }
-  		        it { should have_link('Sign Out') } #SingUp followed by user profile
-        		end
+            it { should have_selector('title', text: 'Application') }
+            it { should_not have_link('Sign Out', href: signout_path) }
+            it { should have_selector('div.alert.alert-notice', 
+                text: 'please check your email') }
+          end
+
+  	    	# describe "after saving the user" do
+  		    #     before { click_button submit }
+  		    #     let(:user) { User.find_by_email('user@example.com') }
+
+  		    #     it { should have_selector('title', text: full_title(user.name)) }
+  		    #     it { should have_selector('div.alert.alert-success', 
+  		    #     							text: 'Welcome') }
+  		    #     it { should have_link('Sign Out') } #SingUp followed by user profile
+        # 	end
   	    end
 
   	    describe "after submission" do
@@ -276,5 +285,16 @@ describe "User Pages" do
           it { should have_content(m1.content) }
           it { should have_content(user.favorites.count) }
         end
+      end
+
+      describe "visiting activation link" do
+        let(:user) { FactoryGirl.create(:user) }
+        before { visit confirm_user_url(user.remember_token) }
+
+          it { should have_selector('title', text: 'Application') }
+          it { should have_selector('div.alert.alert-success', 
+                        text: 'Your Account is now activated. Welcome') }
+          it { should have_link('Sign Out') } #SingUp followed by user profile
+        
       end
 end
