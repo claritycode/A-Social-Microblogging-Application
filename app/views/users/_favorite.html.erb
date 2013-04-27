@@ -2,6 +2,7 @@
   <%= link_to gravatar_for(favorite.user), favorite.user %>
   <span class="user">
     <%= link_to favorite.user.name, favorite.user %>
+    <span class="user_name">@<%= favorite.user.username %></span>
   </span>
   <span class="content"><%= favorite.content %></span>
   <span class="timestamp">
