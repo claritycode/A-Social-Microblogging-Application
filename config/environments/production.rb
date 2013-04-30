@@ -66,13 +66,13 @@ SampleApp::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      :address        => 'smtp.sendgrid.net',
-      :port           => '587',
-      :authentication => :plain,
-      :user_name      => ENV['SENDGRID_USERNAME'],
-      :password       => ENV['SENDGRID_PASSWORD'],
-      :domain         => 'heroku.com',
+      :address              => "smtp.gmail.com",
+      :port                 => 587,
+      :domain               => "gmail.com",
+      :user_name            => ENV['USER_NAME'],
+      :password             => ENV['PASSWORD'],
+      :authentication       => "plain",
       :enable_starttls_auto => true
   }
-  config.action_mailer.default_url_options = { host: "secret-brushlands-2306" }
+  config.action_mailer.default_url_options = { host: "application8" }
 end
