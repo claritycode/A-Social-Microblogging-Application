@@ -15,9 +15,9 @@
 	  	<%if @user.mentioned_microposts.any? %>
 		<h3>Mentions</h3>
 	  	<ol class = "microposts">
-	  		<%= render @microposts %>
+	  		 <%= render partial: 'users/mention', collection: @mentions %>
 	  	</ol>
-	  	<%= will_paginate @microposts %>
+	  	<%= will_paginate @mentions %>
 	  	<%end%>
 	</div>
 </div>

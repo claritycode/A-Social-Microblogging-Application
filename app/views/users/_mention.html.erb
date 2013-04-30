@@ -1,0 +1,11 @@
+<li id="<%= mention.id %>">
+  <%= link_to gravatar_for(mention.user), mention.user %>
+  <span class="user">
+    <%= link_to mention.user.name, mention.user %>
+    <span class="user_name">@<%= mention.user.username %></span>
+  </span>
+  <span class="content"><%= mention.content %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(mention.created_at) %> ago.
+  </span>
+</li>
