@@ -70,7 +70,7 @@ class UsersController < ApplicationController
     # @title = "Mentions"
     # @user = current_user
     # @user = User.find(params[:id])
-    @microposts = @user.mentioned_microposts.paginate(page: params[:page])
+    @mentions = @user.mentioned_microposts.paginate(page: params[:page])
     render 'show_mentions'
   end  
 
