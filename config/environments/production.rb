@@ -74,5 +74,5 @@ SampleApp::Application.configure do
       :authentication       => "plain",
       :enable_starttls_auto => true
   }
-  config.action_mailer.default_url_options = { host: "application8" }
+  config.action_mailer.default_url_options = { host: "application8.herokuapp.com" }
 end
