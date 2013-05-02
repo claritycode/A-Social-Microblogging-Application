@@ -121,4 +121,14 @@ class User < ActiveRecord::Base
     def should_validate_password?
       updating_password || new_record?
     end
+
+    def self.search(search)
+      # if search
+      #   find(:all, conditions: ['name LIKE ?', "%#{search}%"])
+      # else
+      #   find(:all)
+      # end
+      where("name LIKE ?", "%#{search}%")
+    end
+
 end

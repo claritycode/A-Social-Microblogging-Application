@@ -196,6 +196,19 @@ describe "User Pages" do
           end
         end
 
+        describe "when searching users" do
+          let!(:other_user) { FactoryGirl.create(:user, name: "Other User") }
+          before do
+            fill_in "search", with: "other"
+            # click_button "submit"
+            visit users_path
+          end
+
+          it "should list proper users" do
+            page.should have_selector('li', text: other_user.name)
+          end
+        end
+
         describe "delete links" do
 
           it { should_not have_link('delete') }

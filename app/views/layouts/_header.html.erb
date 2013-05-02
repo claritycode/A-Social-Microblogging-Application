@@ -7,6 +7,11 @@
           <li><%= link_to "Home", root_path %></li>
           <% if signed_in? %>
             <li><%= link_to "@mentions", mentions_user_path(current_user) %></li>
+          <li>
+            <%= form_tag users_path, method: 'get' do %>
+              <%= text_field_tag :search, params[:search], class: "search-query inputsearch", placeholder: "search" %>  
+            <% end %>
+          </li>
             <li><%= link_to "Users", users_path %></li>
             <li id="fat-menu" class="dropdown">
               <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
