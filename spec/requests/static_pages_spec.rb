@@ -6,7 +6,7 @@ describe "Static pages" do
 
   shared_examples_for "all static pages" do
     it { should have_selector('h1',    text: heading) }
-    it { should have_selector('title', text: full_title(page_title)) }
+    it { should have_selector('title', text: page_title) }
   end
 
   describe "Home page" do
@@ -15,7 +15,6 @@ describe "Static pages" do
     let(:page_title) { '' }
 
     it_should_behave_like "all static pages"
-    it { should_not have_selector 'title', text: '| Home' }
   end
 
   describe "Help page" do
@@ -45,16 +44,16 @@ describe "Static pages" do
   it "should have the right links on the layout" do
     visit root_path
     click_link "About"
-    page.should have_selector 'title', text: full_title('About Us')
+    page.should have_selector 'title', text: 'About Us'
     click_link "Help"
-    page.should have_selector 'title', text: full_title('Help')
+    page.should have_selector 'title', text: 'Help'
     click_link "Contact"
-    page.should have_selector 'title', text: full_title('Contact')
+    page.should have_selector 'title', text: 'Contact'
     click_link "Home"
     click_link "Sign up now!"
-    page.should have_selector 'title', text: full_title('Sign up')
+    page.should have_selector 'title', text: 'Sign up'
     click_link "Application"
-    page.should have_selector 'title', text: full_title('')
+    page.should have_selector 'title', text: 'Application'
   end
 
   describe "for signed in users" do
@@ -72,21 +71,7 @@ describe "Static pages" do
         #page.should have_link('delete', href: micropost_path(item))
       end
     end
-
-    # describe " For micropost with mentions" do
-    #   let(:other_user) { FactoryGirl.create(:user, 
-    #                 username: 'otheruser') }
-    #   before do
-    #     FactoryGirl.create(:micropost, content: "Lorem @otheruser",
-    #                   user: user)
-    #   end
-
-    #   it "should link mention to users profile" do
-    #     page.should have_link('@otheruser', href: user_path(other_user))
-    #   end
-    # end
-    
-
+  
     describe "following/followers" do
       let(:other_user) { FactoryGirl.create(:user) }
       before do
@@ -116,12 +101,9 @@ describe "Static pages" do
     end
 
     describe "favorite/unfavorite" do
-          # let(:other_user) { FactoryGirl.create(:user) }
-          # let(:m1) { FactoryGirl.create(:micropost, 
-                      # user: other_user) }
 
           describe "favoriting a micropost" do
-            # before { visit root_path }
+
             it "should increment user's favorites" do
               expect do
                 click_button 'Favorite'
@@ -136,7 +118,7 @@ describe "Static pages" do
           end
 
           describe "unfavoriting a micropost" do
-            # before { visit root_path }
+
             before do
               click_button 'Favorite'
               visit root_path
@@ -152,8 +134,7 @@ describe "Static pages" do
 
               it { should have_selector('input', value: 'Favorite') }
             end
-          end
-        
+          end  
     end
   end
 end

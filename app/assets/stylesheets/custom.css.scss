@@ -202,6 +202,16 @@ input {
   @extend .error;
  }
 
+.search-query{
+  height: 1px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.inputsearch{
+  height: 2px;
+}
+
  /* users index */
 
 .users {
@@ -256,16 +266,8 @@ aside {
   clear: none;
 }
 
+/*user name*/
+
 .user_name{
   color: $grayLight;
-}
-
-.search-query{
-  height: 1px;
-  padding: 0px;
-  margin: 0px;
-}
-
-.inputsearch{
-  height: 2px;
 }
