@@ -8,7 +8,12 @@ class UsersController < ApplicationController
     #@users = User.all
     # Paginate returns ActiveRecord::Relation object, this method is 
     #provided by will_paginate, params[:page] also comes from it
-    @users = User.paginate(page: params[:page]) 
+    # @users = User.paginate(page: params[:page]) 
+    unless params[:search].blank?
+      @users = User.search(params[:search]).paginate(page: params[:page])
+    else
+      @users = User.paginate(page: params[:page])
+    end
   end
 
   def show
